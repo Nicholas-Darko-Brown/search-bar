@@ -1,23 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
+import Data from "./mock-data.json";
 
 function App() {
+  const [query, setQuery] = useState("")
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <input type="search" placeholder="Enter Post Title" onChange={(e) => setQuery(e.target.value)} />
+
+      {
+        Data.filter(post => {
+          if(query === "") {
+            return post;
+          } 
+          if (post.first_name.toLocaleLowerCase().includes(query.toLocaleLowerCase())) {
+            return post;
+          }
+          return false
+        }).map((post, index) => (
+          <div key={index} style={{border: "1px solid", width: "20rem", margin: "10px auto"}}>
+            <p>{post.first_name}</p>
+            <p>{post.last_name}</p>
+            <p>{post.email}</p>
+          </div>
+        ))
+      }
+
     </div>
   );
 }
